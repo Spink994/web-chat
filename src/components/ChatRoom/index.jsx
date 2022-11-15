@@ -48,11 +48,17 @@ export default function ChatRoom() {
 
   const chatContainerRef = useRef();
 
-  const [storageValue, setStorageValue] = useLocalStorage("messages", []);
+  const [, setStorageValue] = useLocalStorage("messages", []);
 
   useEffect(() => {
-    dispatch(messageHandler(storageValue));
-  }, [storageValue]);
+    const refreshInterval = setInterval(() => {
+      dispatch(
+        messageHandler(JSON.parse(localStorage.getItem("web-chat-messages")))
+      );
+    }, 2500);
+
+    return () => clearInterval(refreshInterval);
+  }, []);
 
   useEffect(() => {
     chatContainerRef.current.scrollBy({
