@@ -72,9 +72,10 @@ export default function ChatRoom() {
 
   return (
     <section>
-      <div className="h-20 w-full fixed flex items-center font-semibold text-slate-500 justify-center shadow-md bg-slate-50">
+      <div className="h-20 w-full fixed max-w-[768px] flex items-center font-semibold text-slate-500 justify-center shadow-md bg-slate-50">
         Web Chat
       </div>
+      <div className="max-w-[768px] h-20" />
       <div className="flex flex-col gap-4">
         <h1 className="text-center font-semibold text-slate-400 text-xs py-4">
           {new Date().toLocaleString().substring(0, 10).replace(/(\/)/g, " ")}
