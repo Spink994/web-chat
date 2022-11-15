@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ImUserTie } from "react-icons/im";
 import { TbSend } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
@@ -50,26 +50,29 @@ export default function ChatRoom() {
 
   const [storageValue, setStorageValue] = useLocalStorage("messages", []);
 
+  const handleDispatch = () => {
+    if (storageValue === null) {
+      setStorageValue([]);
+      return;
+    }
+
+    setStorageValue(JSON.parse(localStorage.getItem("web-chat-messages")));
+    dispatch(messageHandler(storageValue));
+  };
+
   useEffect(() => {
     const refreshInterval = setInterval(() => {
-      setStorageValue(JSON.parse(localStorage.getItem("web-chat-messages")));
-      dispatch(messageHandler(storageValue));
-    }, 1000);
+      handleDispatch();
+    }, 1500);
 
-    return () => clearInterval(refreshInterval);
-  }, [setStorageValue, storageValue, message]);
-
-  useEffect(() => {
-    chatContainerRef.current.scrollBy({
-      behavior: "smooth",
-      top: 100000,
-      left: 0,
-    });
-  });
+    setTimeout(() => {
+      clearInterval(refreshInterval);
+    }, 2000);
+  }, [storageValue]);
 
   return (
     <section>
-      <div className="h-20 w-full flex items-center font-semibold text-slate-500 justify-center shadow-md bg-slate-50">
+      <div className="h-20 w-full fixed flex items-center font-semibold text-slate-500 justify-center shadow-md bg-slate-50">
         Web Chat
       </div>
       <div className="flex flex-col gap-4">
@@ -79,7 +82,7 @@ export default function ChatRoom() {
 
         <div
           ref={chatContainerRef}
-          className="w-full flex overflow-y-scroll h-screen pb-60 flex-col gap-4 px-4"
+          className="w-full flex overflow-y-scroll h-screen pb-40 flex-col gap-4 px-4"
         >
           {messgesStore !== null &&
             messgesStore?.map((msg, index) => {
@@ -126,10 +129,10 @@ export default function ChatRoom() {
                 );
               })
                 .then(() =>
-                  chatContainerRef.current.scrollBy({
+                  chatContainerRef.current.children[
+                    chatContainerRef.current.children.length - 1
+                  ].scrollIntoView({
                     behavior: "smooth",
-                    top: 200,
-                    left: 0,
                   })
                 )
                 .then(() => setMessage(""));
