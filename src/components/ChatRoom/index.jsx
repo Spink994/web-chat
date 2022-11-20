@@ -129,14 +129,14 @@ export default function ChatRoom() {
                   })
                 );
               })
+                .then(() => setMessage(""))
                 .then(() =>
                   chatContainerRef.current.children[
                     chatContainerRef.current.children.length - 1
                   ].scrollIntoView({
                     behavior: "smooth",
                   })
-                )
-                .then(() => setMessage(""));
+                );
             }}
             className={`font-bold p-4 mr-1 shadow-md rounded-full min-h-16 min-w-16  text-white bg-sky-500`}
           >
