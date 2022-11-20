@@ -77,13 +77,13 @@ export default function ChatRoom() {
       </div>
       <div className="max-w-[768px] h-20" />
       <div className="flex flex-col gap-4">
-        <h1 className="text-center font-semibold text-slate-400 text-xs py-4">
+        <h1 className="text-center fixed left-[50%] -translate-x-[50%] bg-white w-full max-w-[768px] font-semibold text-slate-400 text-xs py-4">
           {new Date().toLocaleString().substring(0, 10).replace(/(\/)/g, " ")}
         </h1>
 
         <div
           ref={chatContainerRef}
-          className="w-full flex overflow-y-scroll h-screen pb-40 flex-col gap-4 px-4"
+          className="w-full flex overflow-y-scroll h-[90vh] pb-40 pt-20 flex-col gap-4 px-4"
         >
           {messgesStore !== null &&
             messgesStore?.map((msg, index) => {
